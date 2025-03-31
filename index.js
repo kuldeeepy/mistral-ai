@@ -26,11 +26,17 @@ async function sendToMistral(message) {
 async function sendToChatwoot(account, conversation, message) {
   try {
     const response = await axios.post(
-      `${chatwoot}/api/v1/accounts/${account}/conversations/${conversation}/messages?api_access_token=${botToken}`,
+      `${chatwoot}/api/v1/accounts/${account}/conversations/${conversation}/messages`,
       {
-        message: { content: message },
+        content: message,
+        message_type: "outgoing",
       },
-      { headers: { "Content-Type": "application/json" } }
+      {
+        headers: {
+          "Content-Type": "application/json",
+          api_access_token: botToken,
+        },
+      }
     );
     return response.data;
   } catch (error) {
